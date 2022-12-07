@@ -1,34 +1,9 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const Sequelize = require('sequelize')
 
-const mysql = require('mysql2/promise')
-
-// TODO: change the credentials to fit your own
-// if user does not have the right to create, run (as root): GRANT ALL PRIVILEGES ON *.* TO 'app'@'localhost';
-const DB_USERNAME = 'app1'
-const DB_PASSWORD = 'welcome123'
-
-let conn
-
-mysql.createConnection({
-    user : DB_USERNAME,
-    password : DB_PASSWORD
-})
-.then((connection) => {
-    conn = connection
-    return connection.query('CREATE DATABASE IF NOT EXISTS tw_homework')
-})
-.then(() => {
-    return conn.end()
-})
-.catch((err) => {
-    console.warn(err.stack)
-})
-
-const sequelize = new Sequelize('tw_homework', DB_USERNAME, DB_PASSWORD,{
-    dialect : 'mysql',
-    logging: false
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: 'my.db'
 })
 
 let FoodItem = sequelize.define('foodItem', {
